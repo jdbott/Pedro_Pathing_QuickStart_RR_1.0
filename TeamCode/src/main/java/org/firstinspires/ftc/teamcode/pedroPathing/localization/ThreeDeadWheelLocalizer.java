@@ -31,16 +31,16 @@ import java.util.concurrent.Executors;
 @Config
 public final class ThreeDeadWheelLocalizer extends Localizer {
     public static class Params {
-        public double par0YTicks = -2480.0;//-2441.9133801212834;//-2426.512456471011; y position of the first parallel encoder (in tick units)
-        public double par1YTicks = 2480; //2467.6258;//2467.9133801212834;//2530.6258; // y position of the second parallel encoder (in tick units)
-        public double perpXTicks = -330.222994370873; //-466.222994370873; //-566.222994370873; //-650.620899175634;//-560.3783221003024; // x position of the perpendicular encoder (in tick units)
+        public double par0YTicks = -2073.6674288446384; // y position of the first parallel encoder (in tick units)
+        public double par1YTicks = 2130.2641987906904; // y position of the second parallel encoder (in tick units)
+        public double perpXTicks = -2293.4870955228225; // x position of the perpendicular encoder (in tick units)
     }
 
     public static Params PARAMS = new Params();
 
     public final Encoder par0, par1, perp;
 
-    public double inPerTick = 0.002948; //0.002934; //24.0 / 8163.0;;
+    public double inPerTick = 0.00296155;
 
     private int lastPar0Pos, lastPar1Pos, lastPerpPos;
 
@@ -65,18 +65,20 @@ public final class ThreeDeadWheelLocalizer extends Localizer {
     public Pose2d pose = new Pose2d(0.0,0.0,0.0);
 
     public ThreeDeadWheelLocalizer(HardwareMap hardwareMap) {
-        par0 = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "par")));
-        par0.setDirection(DcMotorSimple.Direction.REVERSE);
+        par0 = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "rightBack")));
+        par1 = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "leftFront")));
+        perp = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "rightFront")));
 
-        par1 = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "rightBack")));
+        // TODO: reverse encoder directions if needed
+        par0.setDirection(DcMotorSimple.Direction.FORWARD);
         par1.setDirection(DcMotorSimple.Direction.REVERSE);
+        perp.setDirection(DcMotorSimple.Direction.FORWARD);
 
-        perp = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "intake_for_perp")));
 
         LazyImu lazyImu;
         lazyImu = new LazyImu(hardwareMap, "imu", new RevHubOrientationOnRobot(
-                RevHubOrientationOnRobot.LogoFacingDirection.LEFT,
-                RevHubOrientationOnRobot.UsbFacingDirection.UP));
+                RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD));
         imu = lazyImu.get();
         imu.resetYaw();
 
