@@ -28,7 +28,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
 public class Circle extends OpMode {
     private Telemetry telemetryA;
 
-    public static double RADIUS = 10;
+    public static double RADIUS = 30;
 
     private Follower follower;
 

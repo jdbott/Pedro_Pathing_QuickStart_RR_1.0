@@ -90,9 +90,9 @@ public class FollowerConstants {
 
     // Large drive PIDF coefficients
     public static CustomPIDFCoefficients largeDrivePIDFCoefficients = new CustomPIDFCoefficients(
-            0.02,
+            0.03,
             0,
-            0.00002,
+            0,
             0);
 
     // Feed forward constant added on to the large drive PIDF
@@ -103,9 +103,9 @@ public class FollowerConstants {
 
     // Small drive PIDF coefficients
     public static CustomPIDFCoefficients smallDrivePIDFCoefficients = new CustomPIDFCoefficients(
-            0.003,
+            0.02,
             0,
-            0.000005,
+            0,
             0);
 
     // Feed forward constant added on to the small drive PIDF
@@ -117,7 +117,7 @@ public class FollowerConstants {
     // Centripetal force to power scaling
     // todo: there are currently issues with the centripetal force correction, so just don't use it for now
     // i will fix these in another commit soon
-    public static double centripetalScaling = 0.0002;
+    public static double centripetalScaling = 0.00001;
 
     // Acceleration of the drivetrain when power is cut in inches/second^2 (should be negative)
     // if not negative, then the robot thinks that its going to go faster under 0 power
@@ -151,7 +151,7 @@ public class FollowerConstants {
     // When the robot is at the end of its current Path or PathChain and the heading error goes
     // below this value, then end the Path. This is in radians.
     // This can be custom set for each Path.
-    public static double pathEndHeadingConstraint = 0.03;
+    public static double pathEndHeadingConstraint = Math.toRadians(1.72);
 
     // When the t-value of the closest point to the robot on the Path is greater than this value,
     // then the Path is considered at its end.
@@ -161,7 +161,7 @@ public class FollowerConstants {
     // When the Path is considered at its end parametrically, then the Follower has this many
     // seconds to further correct by default.
     // This can be custom set for each Path.
-    public static double pathEndTimeoutConstraint = 100.0;
+    public static double pathEndTimeoutConstraint = 3.0;
 
     // This is how many steps the BezierCurve class uses to approximate the length of a BezierCurve.
     public static int APPROXIMATION_STEPS = 1000;
