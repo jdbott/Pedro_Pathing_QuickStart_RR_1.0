@@ -6,7 +6,6 @@ import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Time;
 import com.acmerobotics.roadrunner.Twist2dDual;
-import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.Vector2dDual;
 import com.acmerobotics.roadrunner.ftc.Encoder;
 import com.acmerobotics.roadrunner.ftc.LazyImu;
@@ -30,39 +29,25 @@ import java.util.concurrent.Executors;
 
 @Config
 public final class ThreeDeadWheelLocalizer extends Localizer {
-    public static class Params {
-        public double par0YTicks = -2073.6674288446384; // y position of the first parallel encoder (in tick units)
-        public double par1YTicks = 2130.2641987906904; // y position of the second parallel encoder (in tick units)
-        public double perpXTicks = -2293.4870955228225; // x position of the perpendicular encoder (in tick units)
-    }
-
     public static Params PARAMS = new Params();
-
     public final Encoder par0, par1, perp;
-
     public double inPerTick = 0.00296155;
-
-    private int lastPar0Pos, lastPar1Pos, lastPerpPos;
-
-    private double lastRawHeadingVel, headingVelOffset;
-
     public double imuYawHeading = 0.0;
-
     public double imuHeadingVelo = 0.0;
-    private ExecutorService imuExecutor = Executors.newSingleThreadExecutor();
-    private Rotation2d lastHeading;
-    private long lastHeadingTime = System.currentTimeMillis();
-
-//    private final Object imuLock = new Object();
+    //    private final Object imuLock = new Object();
 //    @GuardedBy("imuLock")
     public IMU imu;
-
+    public Pose2d pose = new Pose2d(0.0, 0.0, 0.0);
+    private int lastPar0Pos, lastPar1Pos, lastPerpPos;
+    private double lastRawHeadingVel, headingVelOffset;
+    private final ExecutorService imuExecutor = Executors.newSingleThreadExecutor();
+    private Rotation2d lastHeading;
+    private final long lastHeadingTime = System.currentTimeMillis();
     private boolean initialized;
 
 //    private ElapsedTime imuTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 //    public static double IMU_INTERVAL = 100.0;
-
-    public Pose2d pose = new Pose2d(0.0,0.0,0.0);
+    private int headingCounter = 0;
 
     public ThreeDeadWheelLocalizer(HardwareMap hardwareMap) {
         par0 = new OverflowEncoder(new RawEncoder(hardwareMap.get(DcMotorEx.class, "rightBack")));
@@ -103,8 +88,6 @@ public final class ThreeDeadWheelLocalizer extends Localizer {
 //        });
     }
 
-    private int headingCounter = 0;
-
     public void update() {
 
         ElapsedTime loopTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
@@ -133,7 +116,7 @@ public final class ThreeDeadWheelLocalizer extends Localizer {
         double headingDelta0 = (par0PosDelta - par1PosDelta) / (PARAMS.par0YTicks - PARAMS.par1YTicks);
         double headingDelta = headingDelta0;
 
-        if(headingCounter++ > 5) {
+        if (headingCounter++ > 5) {
             YawPitchRollAngles angles = imu.getRobotYawPitchRollAngles();
             Rotation2d heading = Rotation2d.exp(angles.getYaw(AngleUnit.RADIANS));
 //            Log.d("ThreeDeadWheelLocalizer_logger", String.format("Calc:%3.3f, IMU:%3.3f"headingDelta,heading.minus(lastHeading)));
@@ -160,16 +143,16 @@ public final class ThreeDeadWheelLocalizer extends Localizer {
 
         Twist2dDual<Time> twist = new Twist2dDual<>(
                 new Vector2dDual<>(
-                        new DualNum<Time>(new double[] {
+                        new DualNum<Time>(new double[]{
                                 (PARAMS.par0YTicks * par1PosDelta - PARAMS.par1YTicks * par0PosDelta) / (PARAMS.par0YTicks - PARAMS.par1YTicks),
                                 (PARAMS.par0YTicks * par1PosVel.velocity - PARAMS.par1YTicks * par0PosVel.velocity) / (PARAMS.par0YTicks - PARAMS.par1YTicks),
                         }).times(inPerTick),
-                        new DualNum<Time>(new double[] {
-                                (-PARAMS.perpXTicks * headingDelta + perpPosDelta*1.025),
+                        new DualNum<Time>(new double[]{
+                                (-PARAMS.perpXTicks * headingDelta + perpPosDelta * 1.025),
                                 (PARAMS.perpXTicks / (PARAMS.par0YTicks - PARAMS.par1YTicks) * (par1PosVel.velocity - par0PosVel.velocity) + perpPosVel.velocity),
                         }).times(inPerTick)
                 ),
-                new DualNum<>(new double[] {
+                new DualNum<>(new double[]{
                         headingDelta,
                         headingVel,
                 })
@@ -195,12 +178,12 @@ public final class ThreeDeadWheelLocalizer extends Localizer {
         loopTimer.reset();
     }
 
-    public void setPoseEstimate(Pose2d poseEstimate) {
-        this.pose = poseEstimate;
-    }
-
     public Pose2d getPoseEstimate() {
         return this.pose;
+    }
+
+    public void setPoseEstimate(Pose2d poseEstimate) {
+        this.pose = poseEstimate;
     }
 
     public void resetHeading(double newHeading) {
@@ -209,7 +192,12 @@ public final class ThreeDeadWheelLocalizer extends Localizer {
 
     @Override
     public Pose getPose() {
-        return new Pose(pose.position.x,pose.position.y, pose.heading.toDouble());
+        return new Pose(pose.position.x, pose.position.y, pose.heading.toDouble());
+    }
+
+    @Override
+    public void setPose(Pose setPose) {
+        pose = new Pose2d(setPose.getX(), setPose.getY(), setPose.getHeading());
     }
 
     @Override
@@ -232,12 +220,13 @@ public final class ThreeDeadWheelLocalizer extends Localizer {
     }
 
     @Override
-    public void setPose(Pose setPose) {
-        pose = new Pose2d(setPose.getX(), setPose.getY(), setPose.getHeading());
-    }
-
-    @Override
     public double getTotalHeading() {
         return pose.heading.toDouble();
+    }
+
+    public static class Params {
+        public double par0YTicks = -2073.6674288446384; // y position of the first parallel encoder (in tick units)
+        public double par1YTicks = 2130.2641987906904; // y position of the second parallel encoder (in tick units)
+        public double perpXTicks = -2293.4870955228225; // x position of the perpendicular encoder (in tick units)
     }
 }

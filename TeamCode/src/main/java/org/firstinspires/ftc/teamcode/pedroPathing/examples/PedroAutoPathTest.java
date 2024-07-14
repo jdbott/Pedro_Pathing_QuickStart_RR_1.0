@@ -20,10 +20,10 @@ import org.firstinspires.ftc.teamcode.pedroPathing.util.DrivePoseLoggingAction;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.PoseMessage;
 
 @Config
-@Autonomous(name = "Test Blue Pedro",group = "Test")
+@Autonomous(name = "Test Blue Pedro", group = "Test")
 public final class PedroAutoPathTest extends LinearOpMode {
     public static Pose2d starting = new Pose2d(0, 0, 0);
-    protected AutoActionScheduler sched;
+    private AutoActionScheduler sched;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -33,21 +33,18 @@ public final class PedroAutoPathTest extends LinearOpMode {
 
         Follower follower = new Follower(hardwareMap);
 
-        Path forwards = new Path(new BezierCurve(new Point(0,0, Point.CARTESIAN),
-                new Point(20,24, Point.CARTESIAN),
-                new Point(53,24, Point.CARTESIAN)));
-        Path backwards = new Path(new BezierCurve(new Point(53,24, Point.CARTESIAN),
-                new Point(22,24, Point.CARTESIAN),
-                new Point(0,0, Point.CARTESIAN)));
+        Path forwards = new Path(new BezierCurve(new Point(0, 0, Point.CARTESIAN),
+                new Point(20, 24, Point.CARTESIAN),
+                new Point(53, 24, Point.CARTESIAN)));
+        Path backwards = new Path(new BezierCurve(new Point(53, 24, Point.CARTESIAN),
+                new Point(22, 24, Point.CARTESIAN),
+                new Point(0, 0, Point.CARTESIAN)));
 
-        forwards.setZeroPowerAccelerationMultiplier(4.75);
-
-        backwards.setZeroPowerAccelerationMultiplier(2);
         backwards.setReversed(true);
 
         PathBuilder builder = new PathBuilder();
 
-        while(!isStarted() && !isStopRequested()) {
+        while (!isStarted() && !isStopRequested()) {
             telemetry.addLine("Ready to start!! Blue Pedro Auto Test");
             telemetry.update();
         }
@@ -60,14 +57,14 @@ public final class PedroAutoPathTest extends LinearOpMode {
                         new SleepAction(2.0),
                         new DrivePoseLoggingAction(follower, "backward_path_begin"),
                         new FollowPathAction(follower,
-                                builder.addPath(backwards).setLinearHeadingInterpolation(0.0,0.0).build(),
+                                builder.addPath(backwards).setLinearHeadingInterpolation(0.0, 0.0).build(),
                                 false),
                         new DrivePoseLoggingAction(follower, "backward_path_end")
                 ));
         sched.run();
 
-        while(!isStopRequested()) {
-            if(sched.isEmpty()) {
+        while (!isStopRequested()) {
+            if (sched.isEmpty()) {
                 follower.update();
                 telemetry.addData("Auto elapsed time: ", sched.autoRunElapsedTime);
                 telemetry.addData("End Pose: ", new PoseMessage(follower.getPose()));
@@ -77,7 +74,7 @@ public final class PedroAutoPathTest extends LinearOpMode {
         }
     }
 
-    final public void update() {
+    public void update() {
         telemetry.addData("Time left", 30 - getRuntime());
     }
 }

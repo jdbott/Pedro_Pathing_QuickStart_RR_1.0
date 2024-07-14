@@ -24,14 +24,14 @@ import org.firstinspires.ftc.teamcode.pedroPathing.util.PoseMessage;
 
 
 @Config
-@Autonomous(name = "Blue Pedro Cycle Test",group = "Test")
+@Autonomous(name = "Blue Pedro Cycle Test", group = "Test")
 public final class PedroAutoPathCycleTest extends LinearOpMode {
-    public static Pose2d starting = new Pose2d(14.5, -62.0, Math.PI/2);
+    public static Pose2d starting = new Pose2d(14.5, -62.0, Math.PI / 2);
     public static Pose2d backdrop = new Pose2d(48.5, -36.0, Math.PI);
     public static Pose2d spike = new Pose2d(28.5, -24.5, Math.PI);
     public static Pose2d parking = new Pose2d(52.0, -60.0, Math.PI);
 
-    protected AutoActionScheduler sched;
+    private AutoActionScheduler sched;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -39,7 +39,7 @@ public final class PedroAutoPathCycleTest extends LinearOpMode {
 
         sched = new AutoActionScheduler(this::update, hardwareMap);
 
-        while(!isStarted() && !isStopRequested()) {
+        while (!isStarted() && !isStopRequested()) {
             telemetry.addLine("Ready to start!! Blue Auto Pedro Pathing Test ...");
             telemetry.update();
         }
@@ -49,9 +49,9 @@ public final class PedroAutoPathCycleTest extends LinearOpMode {
         Follower follower = new Follower(hardwareMap);
         follower.setStartingPose(new Pose2d(14.5, 62, Math.toRadians(-90)));
 
-        Point backdrop = new Point(48.0,36.0, Point.CARTESIAN);
-        Point cycle = new Point(48.0,30.0, Point.CARTESIAN);
-        Point cycle1 = new Point(45.0,30.0, Point.CARTESIAN);
+        Point backdrop = new Point(48.0, 36.0, Point.CARTESIAN);
+        Point cycle = new Point(48.0, 30.0, Point.CARTESIAN);
+        Point cycle1 = new Point(45.0, 30.0, Point.CARTESIAN);
 
         Path purplePath = new Path(
                 new BezierLine(new Point(14.5, 62.0, Point.CARTESIAN),
@@ -94,20 +94,20 @@ public final class PedroAutoPathCycleTest extends LinearOpMode {
 
         double y_position0 = 11.0;
         double y_position = 12.0;
-        while(cycleCount++ < 3) {
+        while (cycleCount++ < 3) {
 
             // cycle
             Pose2d backdrop0 = follower.getPose();
 
-            if(cycleCount == 2) {
+            if (cycleCount == 2) {
                 y_position0 = 12.0;
                 y_position = 12.5;
-                follower.setPose(new Pose2d(backdrop0.position.x, backdrop0.position.y-0.5,backdrop0.heading.toDouble()));
+                follower.setPose(new Pose2d(backdrop0.position.x, backdrop0.position.y - 0.5, backdrop0.heading.toDouble()));
             }
-            if(cycleCount == 3) {
+            if (cycleCount == 3) {
                 y_position0 = 12.5;
                 y_position = 13.0;
-                follower.setPose(new Pose2d(backdrop0.position.x, backdrop0.position.y-1.5,backdrop0.heading.toDouble()));
+                follower.setPose(new Pose2d(backdrop0.position.x, backdrop0.position.y - 1.5, backdrop0.heading.toDouble()));
             }
 
             Point stagePoint = new Point(backdrop0.position.x, backdrop0.position.y, Point.CARTESIAN);
@@ -158,17 +158,17 @@ public final class PedroAutoPathCycleTest extends LinearOpMode {
 
         boolean firstTime = true;
         Pose2d endPose = follower.getPose();
-        while(!isStopRequested() ) {
-            if(sched.isEmpty()) {
-                if(firstTime) {
+        while (!isStopRequested()) {
+            if (sched.isEmpty()) {
+                if (firstTime) {
                     follower.update();
                     endPose = follower.getPose();
                     firstTime = false;
                     Log.d("Drive_logger", "End drive pose: " + new PoseMessage(endPose));
-                    Log.d("Drive_logger","Auto elapsed time (ms): " + String.format("%3.3f",timer.milliseconds()));
+                    Log.d("Drive_logger", "Auto elapsed time (ms): " + String.format("%3.3f", timer.milliseconds()));
                 }
 
-                telemetry.addData("Auto elapsed time (ms): ", String.format("%3.3f",timer.milliseconds()));
+                telemetry.addData("Auto elapsed time (ms): ", String.format("%3.3f", timer.milliseconds()));
                 telemetry.addData("End Pose: ", new PoseMessage(endPose).toString());
                 telemetry.update();
             }
@@ -176,7 +176,7 @@ public final class PedroAutoPathCycleTest extends LinearOpMode {
         }
     }
 
-    final public void update() {
+    public void update() {
         telemetry.addData("Time left", 30 - getRuntime());
     }
 }

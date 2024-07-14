@@ -119,9 +119,11 @@ open class CachingDcMotor : CachingDcMotorSimple, DcMotor {
      * @see .getPowerFloat
      * @see .setZeroPowerBehavior
      */
-    @Deprecated("""This method is deprecated in favor of direct use of
+    @Deprecated(
+        """This method is deprecated in favor of direct use of
 	  {@link #setZeroPowerBehavior(ZeroPowerBehavior) setZeroPowerBehavior()} and
-	  {@link #setPower(double) setPower()}.""", ReplaceWith("dcMotor.setPowerFloat()"))
+	  {@link #setPower(double) setPower()}.""", ReplaceWith("dcMotor.setPowerFloat()")
+    )
     override fun setPowerFloat() {
         dcMotor.setPowerFloat()
     }

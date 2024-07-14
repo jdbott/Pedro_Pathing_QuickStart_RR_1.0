@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode.pedroPathing.util.cachinghardware
 import com.qualcomm.robotcore.hardware.HardwareDevice
 import com.qualcomm.robotcore.hardware.HardwareDevice.Manufacturer
 
-abstract class CachingHardwareDevice protected constructor(val hardwareDevice: HardwareDevice) : HardwareDevice {
+abstract class CachingHardwareDevice protected constructor(val hardwareDevice: HardwareDevice) :
+    HardwareDevice {
 
     /**
      * Returns an indication of the manufacturer of this device.

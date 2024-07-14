@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit
 
-open class CachingDcMotorEX: CachingDcMotor, DcMotorEx {
+open class CachingDcMotorEX : CachingDcMotor, DcMotorEx {
     val motorEx: DcMotorEx
 
     /**
@@ -110,7 +110,10 @@ open class CachingDcMotorEX: CachingDcMotor, DcMotorEx {
      * @param pidCoefficients the new coefficients to use when in that mode on this motor
      * @see .getPIDCoefficients
      */
-    @Deprecated("Use {@link #setPIDFCoefficients(RunMode, PIDFCoefficients)} instead", ReplaceWith("motorEx.setPIDCoefficients(mode, pidCoefficients)"))
+    @Deprecated(
+        "Use {@link #setPIDFCoefficients(RunMode, PIDFCoefficients)} instead",
+        ReplaceWith("motorEx.setPIDCoefficients(mode, pidCoefficients)")
+    )
     override fun setPIDCoefficients(mode: RunMode, pidCoefficients: PIDCoefficients) {
         motorEx.setPIDCoefficients(mode, pidCoefficients)
     }
@@ -186,7 +189,10 @@ open class CachingDcMotorEX: CachingDcMotor, DcMotorEx {
      * @param mode either [RunMode.RUN_USING_ENCODER] or [RunMode.RUN_TO_POSITION]
      * @return the PID control coefficients used when running in the indicated mode on this motor
      */
-    @Deprecated("Use {@link #getPIDFCoefficients(RunMode)} instead", ReplaceWith("motorEx.getPIDCoefficients(mode)"))
+    @Deprecated(
+        "Use {@link #getPIDFCoefficients(RunMode)} instead",
+        ReplaceWith("motorEx.getPIDCoefficients(mode)")
+    )
     override fun getPIDCoefficients(mode: RunMode): PIDCoefficients {
         return motorEx.getPIDCoefficients(mode)
     }

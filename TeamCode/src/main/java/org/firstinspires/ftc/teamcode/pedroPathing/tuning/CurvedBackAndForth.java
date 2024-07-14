@@ -26,12 +26,10 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
  * @version 1.0, 3/13/2024
  */
 @Config
-@Autonomous (name = "Curved Back And Forth", group = "Autonomous Pathing Tuning")
+@Autonomous(name = "Curved Back And Forth", group = "Autonomous Pathing Tuning")
 public class CurvedBackAndForth extends OpMode {
-    private Telemetry telemetryA;
-
     public static double DISTANCE = 40;
-
+    private Telemetry telemetryA;
     private boolean forward = true;
 
     private Follower follower;
@@ -48,13 +46,13 @@ public class CurvedBackAndForth extends OpMode {
         follower = new Follower(hardwareMap);
 
         forwards = new Path(new BezierCurve(
-                new Point(0,0, Point.CARTESIAN),
-                new Point(Math.abs(DISTANCE),0, Point.CARTESIAN),
-                new Point(Math.abs(DISTANCE),DISTANCE, Point.CARTESIAN)));
+                new Point(0, 0, Point.CARTESIAN),
+                new Point(Math.abs(DISTANCE), 0, Point.CARTESIAN),
+                new Point(Math.abs(DISTANCE), DISTANCE, Point.CARTESIAN)));
         backwards = new Path(new BezierCurve(
-                new Point(Math.abs(DISTANCE),DISTANCE, Point.CARTESIAN),
-                new Point(Math.abs(DISTANCE),0, Point.CARTESIAN),
-                new Point(0,0, Point.CARTESIAN)));
+                new Point(Math.abs(DISTANCE), DISTANCE, Point.CARTESIAN),
+                new Point(Math.abs(DISTANCE), 0, Point.CARTESIAN),
+                new Point(0, 0, Point.CARTESIAN)));
 
         backwards.setReversed(true);
 

@@ -20,20 +20,16 @@ import java.util.Arrays;
 import java.util.List;
 
 @Config
-@Autonomous (name = "Lateral Zero Power Acceleration Tuner", group = "Autonomous Pathing Tuning")
+@Autonomous(name = "Lateral Zero Power Acceleration Tuner", group = "Autonomous Pathing Tuning")
 public class LateralZeroPowerAccelerationTuner extends OpMode {
-    private ArrayList<Double> accelerations = new ArrayList<>();
-
+    public static double VELOCITY = 30;
+    private final ArrayList<Double> accelerations = new ArrayList<>();
     private DcMotorEx leftFront;
     private DcMotorEx leftRear;
     private DcMotorEx rightFront;
     private DcMotorEx rightRear;
     private List<DcMotorEx> motors;
-
     private PoseUpdater poseUpdater;
-
-    public static double VELOCITY = 30;
-
     private double previousVelocity;
 
     private long previousTimeNano;
@@ -104,7 +100,7 @@ public class LateralZeroPowerAccelerationTuner extends OpMode {
         }
 
         poseUpdater.update();
-        Vector heading = new Vector(1.0, poseUpdater.getPose().heading.toDouble() - Math.PI/2);
+        Vector heading = new Vector(1.0, poseUpdater.getPose().heading.toDouble() - Math.PI / 2);
         if (!end) {
             if (!stopping) {
                 if (MathFunctions.dotProduct(poseUpdater.getVelocity(), heading) > VELOCITY) {
@@ -129,7 +125,7 @@ public class LateralZeroPowerAccelerationTuner extends OpMode {
             for (Double acceleration : accelerations) {
                 average += acceleration;
             }
-            average /= (double)accelerations.size();
+            average /= accelerations.size();
 
             telemetryA.addData("lateral zero power acceleration (deceleration):", average);
             telemetryA.update();

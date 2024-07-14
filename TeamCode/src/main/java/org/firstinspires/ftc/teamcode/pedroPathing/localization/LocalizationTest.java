@@ -11,7 +11,7 @@ public class LocalizationTest extends OpMode {
     @Override
     public void init() {
         poseUpdater = new PoseUpdater(hardwareMap);
-        poseUpdater.setStartingPose(new Pose2d(0, 0, Math.toRadians(0)));
+        poseUpdater.setStartingPose(new Pose2d(15, -63, Math.toRadians(90)));
 
         telemetry.addData("Pose Updater:", "Initialized");
         telemetry.update();

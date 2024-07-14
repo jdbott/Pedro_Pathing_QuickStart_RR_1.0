@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.pedroPathing.util;
 
-import android.util.Log;
-
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.canvas.Canvas;
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
@@ -28,11 +26,12 @@ public class Drawing {
     /**
      * This draws everything that will be used in the Follower's telemetryDebug() method. This takes
      * a Follower as an input, so an instance of the DashbaordDrawingHandler class is not needed.
+     *
      * @param follower
      */
     public static void drawDebug(Follower follower) {
         boolean send = false;
-        if (packet == null){
+        if (packet == null) {
             packet = new TelemetryPacket();
             send = true;
         }
@@ -56,12 +55,12 @@ public class Drawing {
      * This adds instructions to the current packet to draw a robot at a specified Pose with a specified
      * color. If no packet exists, then a new one is created.
      *
-     * @param pose the Pose to draw the robot at
+     * @param pose  the Pose to draw the robot at
      * @param color the color to draw the robot with
      */
     public static void drawRobot(Pose2d pose, String color) {
         packet.fieldOverlay().setStroke(color);
-        Pose2d newPose = new Pose2d(pose.position.x,pose.position.y, pose.heading.toDouble());
+        Pose2d newPose = new Pose2d(pose.position.x, pose.position.y, pose.heading.toDouble());
         Drawing.drawRobotOnCanvas(packet.fieldOverlay(), newPose);
     }
 
@@ -69,7 +68,7 @@ public class Drawing {
      * This adds instructions to the current packet to draw a Path with a specified color. If no
      * packet exists, then a new one is created.
      *
-     * @param path the Path to draw
+     * @param path  the Path to draw
      * @param color the color to draw the Path with
      */
     public static void drawPath(Path path, String color) {
@@ -82,7 +81,7 @@ public class Drawing {
      * specified color. If no packet exists, then a new one is created.
      *
      * @param pathChain the PathChain to draw
-     * @param color the color to draw the PathChain with
+     * @param color     the color to draw the PathChain with
      */
     public static void drawPath(PathChain pathChain, String color) {
         for (int i = 0; i < pathChain.size(); i++) {
@@ -95,7 +94,7 @@ public class Drawing {
      * packet exists, then a new one is created.
      *
      * @param poseTracker the DashboardPoseTracker to get the pose history from
-     * @param color the color to draw the pose history with
+     * @param color       the color to draw the pose history with
      */
     public static void drawPoseHistory(DashboardPoseTracker poseTracker, String color) {
         packet.fieldOverlay().setStroke(color);
@@ -123,7 +122,7 @@ public class Drawing {
         c.setStrokeWidth(1);
         c.strokeCircle(t.getX(), t.getY(), ROBOT_RADIUS);
 
-        Vector halfv = new Vector(0.5*ROBOT_RADIUS, t.getTheta());
+        Vector halfv = new Vector(0.5 * ROBOT_RADIUS, t.getTheta());
         Vector p1 = MathFunctions.addVectors(halfv, new Vector(t.getR(), t.getTheta()));
         Vector p2 = MathFunctions.addVectors(p1, halfv);
         c.strokeLine(p1.getXComponent(), p1.getYComponent(), p2.getXComponent(), p2.getYComponent());
@@ -150,7 +149,7 @@ public class Drawing {
     /**
      * This draws a Path on the Dashboard from a specified Array of Points.
      *
-     * @param c the Canvas on the Dashboard on which this will draw
+     * @param c      the Canvas on the Dashboard on which this will draw
      * @param points the Points to draw
      */
     public static void drawPath(Canvas c, double[][] points) {

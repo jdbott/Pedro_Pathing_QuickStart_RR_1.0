@@ -11,20 +11,17 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierCurve;
-import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierLine;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Path;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
 import org.firstinspires.ftc.teamcode.pedroPathing.util.PoseMessage;
 
-@Autonomous (name = "Strafe Path Test", group = "Autonomous Pathing Tuning")
+@Autonomous(name = "Strafe Path Test", group = "Autonomous Pathing Tuning")
 public class StrafePathTest extends OpMode {
-    private Telemetry telemetryA;
-
-    private Follower follower;
-
-    private Path strafe;
-
     long startTime = 0;
+    private Telemetry telemetryA;
+    private Follower follower;
+    private Path strafe;
+    private boolean isDone = false;
 
     /**
      * This initializes the Follower and creates the forward and backward Paths. Additionally, this
@@ -36,8 +33,8 @@ public class StrafePathTest extends OpMode {
 
         follower.setStartingPose(new Pose2d(48, 40, Math.PI));
         strafe = new Path(new BezierCurve(
-                new Point(48,40, Point.CARTESIAN),
-                new Point(8,58, Point.CARTESIAN)));
+                new Point(48, 40, Point.CARTESIAN),
+                new Point(8, 58, Point.CARTESIAN)));
 
         strafe.setZeroPowerAccelerationMultiplier(4.75);
         strafe.setConstantHeadingInterpolation(Math.PI);
@@ -54,24 +51,22 @@ public class StrafePathTest extends OpMode {
      */
     @Override
     public void loop() {
-        if(startTime ==0) {
+        if (startTime == 0) {
             startTime = System.currentTimeMillis();
         }
-        if(follower.isBusy()) {
+        if (follower.isBusy()) {
             follower.update();
         }
         if (!follower.isBusy() && !isDone) {
             try {
-                Log.d("Petro_logger", "Elapsed time (ms): " + (System.currentTimeMillis()-startTime));
+                Log.d("Petro_logger", "Elapsed time (ms): " + (System.currentTimeMillis() - startTime));
                 Thread.sleep(2000);
                 follower.update();
                 Log.d("Petro_logger", "Robot pose: " + new PoseMessage(follower.getPose()));
                 isDone = true;
-            } catch(Exception e) {
+            } catch (Exception e) {
                 //
             }
         }
     }
-
-    private boolean isDone = false;
 }
