@@ -1,11 +1,12 @@
 package org.firstinspires.ftc.teamcode.pedroPathing.follower;
 
+import android.util.Log;
+
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.acmerobotics.roadrunner.Action;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Path;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.PathChain;
-import org.firstinspires.ftc.teamcode.pedroPathing.util.Drawing;
 
 public class FollowPathAction implements Action {
 
@@ -42,17 +43,16 @@ public class FollowPathAction implements Action {
 
     @Override
     public boolean run(TelemetryPacket packet) {
-        if (!started) {
-            if (m_path != null) {
+        if(!started) {
+            if(m_path != null) {
                 m_follower.followPath(m_path, holdEnd);
-            } else if (m_pathChain != null) {
+            } else if(m_pathChain != null) {
                 m_follower.followPath(m_pathChain, holdEnd);
             }
             started = true;
         }
 
         m_follower.update();
-        Drawing.drawDebug(m_follower, packet);
 
         return m_follower.isBusy();
     }

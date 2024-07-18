@@ -18,8 +18,8 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Vector;
  * @author Harrison Womack - 10158 Scott's Bots
  * @version 1.0, 3/21/2024
  */
-@TeleOp(name = "Pedro Pathing TeleOp Enhancements", group = "Test")
-public class TeleOpEnhancements extends OpMode {
+@TeleOp(name = "Pedro Pathing TeleOp Enhancements", group = "Pedro TeleOp")
+public class TeleOpEnhancementsPedro extends OpMode {
     private Follower follower;
 
     private DcMotorEx leftFront;

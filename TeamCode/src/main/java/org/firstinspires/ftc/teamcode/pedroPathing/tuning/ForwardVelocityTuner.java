@@ -35,17 +35,21 @@ import java.util.List;
  * @version 1.0, 3/13/2024
  */
 @Config
-@Autonomous(name = "Forward Velocity Tuner", group = "Autonomous Pathing Tuning")
+@Autonomous (name = "Forward Velocity Tuner", group = "Autonomous Pathing Tuning")
 public class ForwardVelocityTuner extends OpMode {
-    public static double DISTANCE = 72;
-    public static double RECORD_NUMBER = 10;
-    private final ArrayList<Double> velocities = new ArrayList<>();
+    private ArrayList<Double> velocities = new ArrayList<>();
+
     private DcMotorEx leftFront;
     private DcMotorEx leftRear;
     private DcMotorEx rightFront;
     private DcMotorEx rightRear;
     private List<DcMotorEx> motors;
+
     private PoseUpdater poseUpdater;
+
+    public static double DISTANCE = 72;
+    public static double RECORD_NUMBER = 10;
+
     private Telemetry telemetryA;
 
     private boolean end;
@@ -89,7 +93,6 @@ public class ForwardVelocityTuner extends OpMode {
         telemetryA.addLine("After running the distance, the robot will cut power from the drivetrain and display the forward velocity.");
         telemetryA.addLine("Press CROSS or A on game pad 1 to stop.");
         telemetryA.update();
-
     }
 
     /**
@@ -127,6 +130,9 @@ public class ForwardVelocityTuner extends OpMode {
             } else {
                 double currentVelocity = Math.abs(MathFunctions.dotProduct(poseUpdater.getVelocity(), new Vector(1, 0)));
                 velocities.add(currentVelocity);
+                telemetryA.addLine("velocity: " + currentVelocity);
+                telemetryA.addLine("x: " + poseUpdater.getPose().position.x);
+                telemetryA.update();
                 velocities.remove(0);
             }
         } else {
@@ -134,8 +140,9 @@ public class ForwardVelocityTuner extends OpMode {
             for (Double velocity : velocities) {
                 average += velocity;
             }
-            average /= velocities.size();
+            average /= (double) velocities.size();
 
+            telemetryA.addLine("velocity count: " + velocities.size());
             telemetryA.addData("forward velocity:", average);
             telemetryA.update();
         }

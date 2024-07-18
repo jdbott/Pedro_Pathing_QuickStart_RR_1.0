@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.pedroPathing.tuning;
 
+import android.util.Log;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -11,6 +14,7 @@ import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.BezierCurve;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Path;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
+import org.firstinspires.ftc.teamcode.pedroPathing.util.PoseMessage;
 
 /**
  * This is the CurvedBackAndForth autonomous OpMode. It runs the robot in a specified distance
@@ -26,10 +30,13 @@ import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Point;
  * @version 1.0, 3/13/2024
  */
 @Config
-@Autonomous(name = "Curved Back And Forth", group = "Autonomous Pathing Tuning")
+//@Disabled
+@Autonomous (name = "Curved Back And Forth", group = "Autonomous Pathing Tuning")
 public class CurvedBackAndForth extends OpMode {
-    public static double DISTANCE = 40;
     private Telemetry telemetryA;
+
+    public static double DISTANCE = 24;
+
     private boolean forward = true;
 
     private Follower follower;
@@ -45,24 +52,16 @@ public class CurvedBackAndForth extends OpMode {
     public void init() {
         follower = new Follower(hardwareMap);
 
-        forwards = new Path(new BezierCurve(
-                new Point(0, 0, Point.CARTESIAN),
-                new Point(Math.abs(DISTANCE), 0, Point.CARTESIAN),
-                new Point(Math.abs(DISTANCE), DISTANCE, Point.CARTESIAN)));
-        backwards = new Path(new BezierCurve(
-                new Point(Math.abs(DISTANCE), DISTANCE, Point.CARTESIAN),
-                new Point(Math.abs(DISTANCE), 0, Point.CARTESIAN),
-                new Point(0, 0, Point.CARTESIAN)));
-
-        backwards.setReversed(true);
+        forwards = new Path(new BezierCurve(new Point(0,0, Point.CARTESIAN), new Point(Math.abs(DISTANCE),0, Point.CARTESIAN), new Point(Math.abs(DISTANCE),DISTANCE, Point.CARTESIAN)));
+        backwards = new Path(new BezierCurve(new Point(Math.abs(DISTANCE),DISTANCE, Point.CARTESIAN), new Point(Math.abs(DISTANCE),0, Point.CARTESIAN), new Point(0,0, Point.CARTESIAN)));
 
         follower.followPath(forwards);
 
         telemetryA = new MultipleTelemetry(this.telemetry, FtcDashboard.getInstance().getTelemetry());
         telemetryA.addLine("This will run the robot in a curve going " + DISTANCE + " inches"
-                + " to the left and the same number of inches forward. The robot will go"
-                + "forward and backward continuously along the path. Make sure you have"
-                + "enough room.");
+                            + " to the left and the same number of inches forward. The robot will go"
+                            + "forward and backward continuously along the path. Make sure you have"
+                            + "enough room.");
         telemetryA.update();
     }
 
@@ -73,9 +72,10 @@ public class CurvedBackAndForth extends OpMode {
     @Override
     public void loop() {
         follower.update();
-        if (!follower.isBusy()) {
+        if (!follower.isBusy() && !isDone) {
             if (forward) {
                 forward = false;
+                backwards.setReversed(true);
                 follower.followPath(backwards);
             } else {
                 forward = true;
@@ -86,4 +86,6 @@ public class CurvedBackAndForth extends OpMode {
         telemetryA.addData("going forward", forward);
         follower.telemetryDebug(telemetryA);
     }
+
+    private boolean isDone = false;
 }

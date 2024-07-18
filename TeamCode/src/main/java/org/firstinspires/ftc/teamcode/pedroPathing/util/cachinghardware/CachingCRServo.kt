@@ -8,8 +8,7 @@ class CachingCRServo
  * Default constructor for the cached continuous rotation servo, sets the threshold to 0.02
  *
  * @param CRServo the continuous rotation servo to encapsulate in the caching control
- */ @JvmOverloads constructor(val crServo: CRServo, changeThreshold: Double = 0.005) :
-    CachingDcMotorSimple(crServo, changeThreshold), CRServo {
+ */ @JvmOverloads constructor(val crServo: CRServo, changeThreshold: Double = 0.005) : CachingDcMotorSimple(crServo, changeThreshold), CRServo {
     /**
      * Allows an initial setting of a custom changeThreshold
      *

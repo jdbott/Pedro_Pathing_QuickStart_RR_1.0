@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.pedroPathing.util.cachinghardware
 
+import android.util.Log
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import kotlin.math.abs
 
@@ -9,10 +10,8 @@ open class CachingDcMotorSimple
  *
  * @param dcMotorSimple the simple motor to encapsulate in the caching control
  * @param cachingTolerance the new change threshold at which the motor will be written to.
- */ @JvmOverloads constructor(
-    val dcMotorSimple: DcMotorSimple,
-    var cachingTolerance: Double = 0.005
-) : CachingHardwareDevice(dcMotorSimple), DcMotorSimple {
+ */ @JvmOverloads constructor(val dcMotorSimple: DcMotorSimple,
+                              var cachingTolerance: Double = 0.005) : CachingHardwareDevice(dcMotorSimple), DcMotorSimple {
     private var cachedPower = 0.0
     /**
      * returns the current changeThreshold value

@@ -10,10 +10,8 @@ import kotlin.math.abs
  *
  * @param cachingTolerance the new change threshold at which the motor will be written to.
  */
-open class CachingServo @JvmOverloads constructor(
-    val servo: Servo,
-    var cachingTolerance: Double = 0.001
-) : CachingHardwareDevice(servo), Servo {
+open class CachingServo @JvmOverloads constructor(val servo: Servo,
+                                                  var cachingTolerance: Double = 0.001) : CachingHardwareDevice(servo), Servo {
     private var cachedPosition: Double
     /**
      * returns the current changeThreshold value

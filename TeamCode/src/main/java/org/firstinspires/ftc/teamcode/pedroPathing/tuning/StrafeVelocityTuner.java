@@ -4,6 +4,7 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+//import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -35,17 +36,22 @@ import java.util.List;
  * @version 1.0, 3/13/2024
  */
 @Config
-@Autonomous(name = "Strafe Velocity Tuner", group = "Autonomous Pathing Tuning")
+//@Disabled
+@Autonomous (name = "Strafe Velocity Tuner", group = "Autonomous Pathing Tuning")
 public class StrafeVelocityTuner extends OpMode {
-    public static double DISTANCE = 72;
-    public static double RECORD_NUMBER = 10;
-    private final ArrayList<Double> velocities = new ArrayList<>();
+    private ArrayList<Double> velocities = new ArrayList<>();
+
     private DcMotorEx leftFront;
     private DcMotorEx leftRear;
     private DcMotorEx rightFront;
     private DcMotorEx rightRear;
     private List<DcMotorEx> motors;
+
     private PoseUpdater poseUpdater;
+
+    public static double DISTANCE = 72;
+    public static double RECORD_NUMBER = 10;
+
     private Telemetry telemetryA;
 
     private boolean end;
@@ -123,8 +129,11 @@ public class StrafeVelocityTuner extends OpMode {
                     motor.setPower(0);
                 }
             } else {
-                double currentVelocity = Math.abs(MathFunctions.dotProduct(poseUpdater.getVelocity(), new Vector(1, Math.PI / 2)));
+                double currentVelocity = Math.abs(MathFunctions.dotProduct(poseUpdater.getVelocity(), new Vector(1, Math.PI/2)));
                 velocities.add(currentVelocity);
+                telemetryA.addLine("velocity: " + currentVelocity);
+                telemetryA.addLine("y: " + poseUpdater.getPose().position.y);
+                telemetryA.update();
                 velocities.remove(0);
             }
         } else {
@@ -132,8 +141,8 @@ public class StrafeVelocityTuner extends OpMode {
             for (Double velocity : velocities) {
                 average += velocity;
             }
-            average /= velocities.size();
-
+            average /= (double) velocities.size();
+            telemetryA.addLine("velocity count: " + velocities.size());
             telemetryA.addData("strafe velocity:", average);
             telemetryA.update();
         }

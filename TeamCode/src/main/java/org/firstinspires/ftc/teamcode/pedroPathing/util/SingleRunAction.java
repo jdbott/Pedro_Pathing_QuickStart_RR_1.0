@@ -13,7 +13,7 @@ package org.firstinspires.ftc.teamcode.pedroPathing.util;
 public class SingleRunAction {
     private boolean hasBeenRun;
 
-    private final Runnable runnable;
+    private Runnable runnable;
 
     /**
      * This creates a new SingleRunAction with a Runnable containing the code to be run for this action.

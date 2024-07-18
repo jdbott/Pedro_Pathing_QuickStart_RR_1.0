@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.pedroPathing.localization;
 
-import com.acmerobotics.roadrunner.Pose2d;
-
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.MathFunctions;
 import org.firstinspires.ftc.teamcode.pedroPathing.pathGeneration.Vector;
 
@@ -22,8 +20,8 @@ public class Pose {
     /**
      * This creates a new Pose from a x, y, and heading inputs.
      *
-     * @param setX       the initial x value
-     * @param setY       the initial y value
+     * @param setX the initial x value
+     * @param setY the initial y value
      * @param setHeading the initial heading value
      */
     public Pose(double setX, double setY, double setHeading) {
@@ -42,24 +40,11 @@ public class Pose {
         this(setX, setY, 0);
     }
 
-    public Pose(Pose2d pose2d) {
-        this(pose2d.position.x, pose2d.position.y, pose2d.heading.toDouble());
-    }
-
     /**
      * This creates a new Pose with no inputs and 0 for all values.
      */
     public Pose() {
-        this(0, 0, 0);
-    }
-
-    /**
-     * This returns the x value.
-     *
-     * @return returns the x value
-     */
-    public double getX() {
-        return x;
+        this(0,0,0);
     }
 
     /**
@@ -72,15 +57,6 @@ public class Pose {
     }
 
     /**
-     * This returns the y value.
-     *
-     * @return returns the y value
-     */
-    public double getY() {
-        return y;
-    }
-
-    /**
      * This sets the y value.
      *
      * @param set the y value
@@ -90,21 +66,39 @@ public class Pose {
     }
 
     /**
-     * This returns the heading value.
-     *
-     * @return returns the heading value
-     */
-    public double getHeading() {
-        return heading;
-    }
-
-    /**
      * This sets the heading value.
      *
      * @param set the heading value
      */
     public void setHeading(double set) {
         heading = MathFunctions.normalizeAngle(set);
+    }
+
+    /**
+     * This returns the x value.
+     *
+     * @return returns the x value
+     */
+    public double getX() {
+        return x;
+    }
+
+    /**
+     * This returns the y value.
+     *
+     * @return returns the y value
+     */
+    public double getY() {
+        return y;
+    }
+
+    /**
+     * This returns the heading value.
+     *
+     * @return returns the heading value
+     */
+    public double getHeading() {
+        return heading;
     }
 
     /**
@@ -188,7 +182,7 @@ public class Pose {
      * This returns if a Pose is within a specified accuracy of this Pose in terms of x position,
      * y position, and heading.
      *
-     * @param pose     the input Pose to check
+     * @param pose the input Pose to check
      * @param accuracy the specified accuracy necessary to return true
      * @return returns if the input Pose is within the specified accuracy of this Pose
      */

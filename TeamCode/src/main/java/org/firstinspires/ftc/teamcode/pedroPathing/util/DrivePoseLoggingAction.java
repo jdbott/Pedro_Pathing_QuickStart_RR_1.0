@@ -9,18 +9,20 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedroPathing.follower.Follower;
 
+import java.text.DecimalFormat;
+
 public class DrivePoseLoggingAction implements Action {
-    static ElapsedTime autoStartTimer;
-    static ElapsedTime lastLogEndTimer;
     String label;
     String message;
+    static ElapsedTime autoStartTimer;
+    static ElapsedTime lastLogEndTimer;
     Pose2d poseToLog;
     Follower follower;
 
     public DrivePoseLoggingAction(Follower follower, String label, boolean isStart) {
         this.follower = follower;
         this.label = label;
-        if (isStart) {
+        if(isStart) {
             autoStartTimer = null;
         }
     }
@@ -35,7 +37,7 @@ public class DrivePoseLoggingAction implements Action {
         this.label = label;
         this.message = message;
 
-        if (isStart) {
+        if(isStart) {
             autoStartTimer = null;
         }
     }
@@ -48,20 +50,20 @@ public class DrivePoseLoggingAction implements Action {
 
     @Override
     public boolean run(TelemetryPacket packet) {
-        if (autoStartTimer == null) {
+        if(autoStartTimer == null) {
             autoStartTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         }
 
-        if (lastLogEndTimer == null) {
+        if(lastLogEndTimer == null) {
             lastLogEndTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
         }
 
         Log.d("Drive_Logger",
-                "  [" + this.label + "]"
-                        + "Estimated Pose: " + new PoseMessage(follower.getPose())
-                        + " | Elapsed time: " + String.format("%3.1f", lastLogEndTimer.milliseconds())
-                        + (message != null ? " | { " + this.message + " }" : "")
-                        + " | Auto Timer (s): " + String.format("%.3f", autoStartTimer.milliseconds()));
+                         "  [" + this.label + "]"
+                + "Estimated Pose: " + new PoseMessage(follower.getPose())
+                                 + " | Elapsed time: " + String.format("%3.1f", lastLogEndTimer.milliseconds())
+                        + (message != null? " | { " + this.message + " }": "")
+                        + " | Auto Timer (s): " + String.format("%.3f",autoStartTimer.milliseconds()));
 
         lastLogEndTimer.reset();
         return false;
